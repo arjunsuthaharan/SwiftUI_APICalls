@@ -1,16 +1,49 @@
-//
-//  ContentView.swift
 //  SwiftUI_APICalls
-//
-//  Created by Arjun Suthaharan on 2023-10-11.
-//
 
 import SwiftUI
 
+struct Course: Hashable, Codable {
+    let name: String
+    let image: String
+}
+
+class ViewModel: ObservableObject {
+    
+    @Published var courses: [Course] = []
+    func fetch(){
+        
+        // creating url string for fetching JSON data
+        guard let url = URL(string: "") else{
+            return
+        }
+        
+        // creating variable to store data
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+            guard let data = data, error == nil else{
+                return
+            }
+            
+        // Coverting data to JSON
+            do{
+                let courses = try JSONDecoder().decode([Course].self, from: data)
+            
+        }
+            catch{
+                print("Json decoding error")
+            }
+        }
+        
+        task.resume()
+    }
+}
+
 struct ContentView: View {
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        NavigationView{
+            List{
+                
+            }
+        }
     }
 }
 
